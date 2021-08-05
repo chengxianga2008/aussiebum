@@ -24,10 +24,21 @@ class DateDiff
     public function __construct(string $first_date, string $second_date)
     {
         $this->first_date = DateTime::createFromFormat('d/m/Y', $first_date, new DateTimeZone('UTC')) ?: null;
+
+        if( DateTime::getLastErrors()['warning_count'] > 0 ){
+            throw new \Exception("first date parsed error");
+        }
+
         if (!$this->first_date) {
             throw new \Exception("first date format is not correct");
         }
+
         $this->second_date = DateTime::createFromFormat('d/m/Y', $second_date, new DateTimeZone('UTC')) ?: null;
+        
+        if( DateTime::getLastErrors()['warning_count'] > 0 ){
+            throw new \Exception("second date parsed error");
+        }
+        
         if (!$this->second_date) {
             throw new \Exception("second date format is not correct");
         }

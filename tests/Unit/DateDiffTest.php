@@ -28,4 +28,36 @@ class DateDiffTest extends TestCase
         $days = new DateDiff('03/01/1989', '03/08/1983');
         $this->assertEquals(1979, $days->computeDiff());
     }
+
+    public function testInvalidFirstDateInput(): void
+    {
+        $this->expectExceptionMessage('first date format is not correct');
+        $days = new DateDiff('', '03/02/1989');
+
+        $days = new DateDiff('1989-02-01', '03/02/1989');
+    }
+
+    public function testInvalidSecondDateInput(): void
+    {
+        $this->expectExceptionMessage('second date format is not correct');
+        $days = new DateDiff('03/02/1989', '');
+
+        $days = new DateDiff('03/02/1989', '1989-02-01');
+    }
+
+    public function testFirstDateParseError(): void
+    {
+        $this->expectExceptionMessage('first date parsed error');
+        $days = new DateDiff('50/90/1989', '03/02/1989');
+
+        $days = new DateDiff('29/02/1989', '03/02/1989');
+    }
+
+    public function testSecondDateParseError(): void
+    {
+        $this->expectExceptionMessage('second date parsed error');
+        $days = new DateDiff('03/02/1989', '50/90/1989');
+
+        $days = new DateDiff('03/02/1989', '29/02/1989');
+    }
 }
